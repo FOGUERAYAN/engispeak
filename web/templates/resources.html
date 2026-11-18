@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}Fiches · EngiSpeak{% endblock %}
+{% block content %}
+<h1 class="font-display text-4xl font-extrabold tracking-tight">Fiches mémo</h1>
+<p class="mt-2 text-ink/70 max-w-prose">Les aide-mémoire à garder sous la main pendant les sessions : transitions, voix, persuasion, vocabulaire.</p>
+{% if resources %}
+<ul class="mt-8 divide-y divide-ink/10 rounded-lg bg-white border border-ink/10">
+  {% for r in resources %}
+  <li class="flex items-center justify-between gap-4 px-5 py-4">
+    <span class="font-semibold">{{ r.name }}</span>
+    <span class="flex items-center gap-4 text-sm text-ink/60">
+      {{ (r.size / 1024) | round(1) }} Ko
+      <a href="/resources/{{ r.name }}" class="rounded-md border border-ink/30 px-3 py-1.5 font-semibold text-ink hover:border-ink">Ouvrir</a>
+    </span>
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p class="mt-8 rounded-lg bg-white border border-ink/10 p-6">
+  Aucune fiche pour l'instant. Ajoute des fichiers dans le conteneur Blob configuré
+  (ou dans le dossier <code>resources/</code> en local), puis recharge la page.
+</p>
+{% endif %}
+<p class="mt-4 text-xs text-ink/45">Source : {{ 'Azure Blob Storage' if backend == 'azure_blob' else 'dossier local' }}</p>
+{% endblock %}

@@ -1,0 +1,11 @@
+{# Barre "scène" : 16 étapes, colorées par niveau quand validées #}
+{% set lvl = {1: "bg-lvl1", 2: "bg-lvl2", 3: "bg-lvl3", 4: "bg-lvl4"} %}
+<div class="flex gap-1" role="img" aria-label="{{ done|length }} étapes validées sur 16">
+  {% for week in roadmap %}
+    {% for step in week.steps %}
+      <div class="h-3 flex-1 {{ 'rounded-full' if step.kind == 'showcase' else 'rounded-sm' }} {{ lvl[week.number] if step.id in done else 'bg-ink/10' }}"
+           title="{{ step.title }}"></div>
+    {% endfor %}
+    {% if not loop.last %}<div class="w-2"></div>{% endif %}
+  {% endfor %}
+</div>

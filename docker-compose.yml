@@ -1,0 +1,48 @@
+# Environnement local complet : PostgreSQL + web-app + worker.
+# Les ressources de cours sont lues dans ./resources (fallback local),
+# sauf si AZURE_STORAGE_ACCOUNT_URL est défini dans .env.
+services:
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-engispeak}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-engispeak}
+      POSTGRES_DB: ${POSTGRES_DB:-engispeak}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-engispeak}"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  web:
+    build:
+      context: .
+      dockerfile: web/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-engispeak}:${POSTGRES_PASSWORD:-engispeak}@db:5432/${POSTGRES_DB:-engispeak}
+      LOCAL_RESOURCES_DIR: /app/resources
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  worker:
+    build:
+      context: .
+      dockerfile: worker/Dockerfile
+    env_file: .env
+    environment:
+      DATABASE_URL: postgresql+psycopg://${POSTGRES_USER:-engispeak}:${POSTGRES_PASSWORD:-engispeak}@db:5432/${POSTGRES_DB:-engispeak}
+      WORKER_INTERVAL_SECONDS: ${WORKER_INTERVAL_SECONDS:-60}
+    depends_on:
+      db:
+        condition: service_healthy
+      web:
+        condition: service_started
+
+volumes:
+  pgdata:

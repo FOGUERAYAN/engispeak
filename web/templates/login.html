@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="max-w-xl">
+  <h1 class="font-display text-5xl font-extrabold leading-[1.05] tracking-tight">
+    Un mois pour prendre la parole en anglais sans trembler.
+  </h1>
+  <p class="mt-5 text-lg text-ink/75 max-w-prose">
+    Douze TED Talks à décortiquer, un défi oral après chacun, et une prise filmée chaque dimanche.
+    Coche tes étapes au fil des semaines et récupère les fiches mémo.
+  </p>
+  <form method="post" action="/login" class="mt-8 flex flex-col sm:flex-row gap-3">
+    <label for="student_id" class="sr-only">Ton identifiant</label>
+    <input id="student_id" name="student_id" required minlength="2" maxlength="32"
+           placeholder="ton.prenom" autocomplete="username"
+           class="flex-1 rounded-md border border-ink/20 bg-white px-4 py-3 text-lg">
+    <button class="rounded-md bg-ink px-6 py-3 text-lg font-semibold text-white hover:bg-ink/90">
+      Commencer la roadmap
+    </button>
+  </form>
+  {% if error %}<p class="mt-3 text-lvl4 font-semibold">{{ error }}</p>{% endif %}
+  <p class="mt-3 text-sm text-ink/55">Pas de mot de passe : ton identifiant sert seulement à retrouver ta progression.</p>
+</section>
+{% endblock %}

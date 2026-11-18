@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}EngiSpeak{% endblock %}</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A//www.w3.org/2000/svg%22%20viewBox%3D%22440%20440%201052%201052%22%3E%0A%20%20%3Cpath%20d%3D%22M682%20678%20L972%20967%20L682%201257%20M972%20967%20L560%20967%22%20fill%3D%22none%22%20stroke%3D%22%234A1D4A%22%20stroke-width%3D%22136%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M1244%20967%20L1372%20967%22%20fill%3D%22none%22%20stroke%3D%22%234A1D4A%22%20stroke-width%3D%22136%22%20stroke-linecap%3D%22round%22/%3E%0A%20%20%3Cpath%20d%3D%22M1039%20558%20L1039%20745%20L937%20645%20Q902%20610%20902%20558%20A68.5%2068.5%200%200%201%201039%20558%20Z%22%20fill%3D%22%232F9E6B%22/%3E%0A%20%20%3Cpath%20d%3D%22M1175%20858%20L1175%20715%20Q1175%20665%201212%20630%20A68%2068%200%200%201%201308%20726%20Z%22%20fill%3D%22%23D9A400%22/%3E%0A%20%20%3Cpath%20d%3D%22M1175%201076%20L1175%201219%20Q1175%201269%201212%201304%20A68%2068%200%200%200%201308%201208%20Z%22%20fill%3D%22%23E8742A%22/%3E%0A%20%20%3Cpath%20d%3D%22M1039%201376%20L1039%201189%20L937%201289%20Q902%201324%20902%201376%20A68.5%2068.5%200%200%200%201039%201376%20Z%22%20fill%3D%22%23D2443C%22/%3E%0A%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+  <!-- Tailwind via CDN : pratique pour un MVP sans build. Pour la prod, préférer un build Tailwind. -->
+  <script src="https://cdn.tailwindcss.com/3.4.17"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            ink: "#4A1D4A",
+            paper: "#F5F7FB",
+            spot: "#F4B740",
+            lvl1: "#2F9E6B", lvl2: "#D9A400", lvl3: "#E8742A", lvl4: "#D2443C",
+          },
+          fontFamily: {
+            display: ['"Bricolage Grotesque"', "system-ui", "sans-serif"],
+            body: ['"Source Sans 3"', "system-ui", "sans-serif"],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    :focus-visible { outline: 3px solid #F4B740; outline-offset: 2px; }
+    @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+  </style>
+</head>
+<body class="bg-paper text-ink font-body antialiased min-h-screen">
+  <header class="border-b border-ink/10 bg-white">
+    <div class="mx-auto max-w-4xl px-5 py-4 flex items-center justify-between gap-4">
+      <a href="/" class="flex items-center gap-2 font-display text-2xl font-extrabold tracking-tight">
+        <svg class="h-9 w-9" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" viewBox="440 440 1052 1052">   <path d="M682 678 L972 967 L682 1257 M972 967 L560 967" fill="none" stroke="#4A1D4A" stroke-width="136" stroke-linecap="round" stroke-linejoin="round"/>   <path d="M1244 967 L1372 967" fill="none" stroke="#4A1D4A" stroke-width="136" stroke-linecap="round"/>   <path d="M1039 558 L1039 745 L937 645 Q902 610 902 558 A68.5 68.5 0 0 1 1039 558 Z" fill="#2F9E6B"/>   <path d="M1175 858 L1175 715 Q1175 665 1212 630 A68 68 0 0 1 1308 726 Z" fill="#D9A400"/>   <path d="M1175 1076 L1175 1219 Q1175 1269 1212 1304 A68 68 0 0 0 1308 1208 Z" fill="#E8742A"/>   <path d="M1039 1376 L1039 1189 L937 1289 Q902 1324 902 1376 A68.5 68.5 0 0 0 1039 1376 Z" fill="#D2443C"/> </svg>
+        EngiSpeak
+      </a>
+      <nav class="flex items-center gap-5 text-sm font-semibold">
+        <a href="/" class="hover:underline underline-offset-4">Roadmap</a>
+        <a href="/resources" class="hover:underline underline-offset-4">Fiches</a>
+        {% if student %}
+        <form method="post" action="/logout">
+          <button class="text-ink/60 hover:text-ink">Quitter ({{ student }})</button>
+        </form>
+        {% endif %}
+      </nav>
+    </div>
+  </header>
+  <main class="mx-auto max-w-4xl px-5 py-10">
+    {% block content %}{% endblock %}
+  </main>
+  <footer class="mx-auto max-w-4xl px-5 pb-10 text-sm text-ink/50">
+    1 mois, 12 sessions, 4 Sunday Showcases. Contenu basé sur les TED Talks cités.
+  </footer>
+</body>
+</html>

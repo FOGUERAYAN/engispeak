@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Ma roadmap · EngiSpeak{% endblock %}
+{% block content %}
+{% set lvl_text = {1: "text-lvl1", 2: "text-lvl2", 3: "text-lvl3", 4: "text-lvl4"} %}
+<section>
+  <p class="text-ink/60">Bonjour {{ student }},</p>
+  <h1 class="font-display text-4xl font-extrabold tracking-tight mt-1">
+    {% if summary.finished %}Roadmap terminée. Bravo !
+    {% else %}{{ summary.completed }} étape{{ 's' if summary.completed > 1 }} sur {{ summary.total }}{% endif %}
+  </h1>
+  <div class="mt-5">{% include "_track.html" %}</div>
+  {% if summary.next_step %}
+  <a href="/weeks/{{ summary.current_week }}#{{ summary.next_step.id }}"
+     class="mt-6 inline-block rounded-md bg-spot px-5 py-3 font-semibold hover:brightness-95">
+    Reprendre : {{ summary.next_step.title }}
+  </a>
+  {% endif %}
+</section>
+
+<section class="mt-12 grid gap-4 sm:grid-cols-2">
+  {% for week in roadmap %}
+  {% set d = summary.per_week[week.number] %}
+  <a href="/weeks/{{ week.number }}" class="group block rounded-lg bg-white p-5 border border-ink/10 hover:border-ink/40">
+    <div class="flex items-baseline justify-between">
+      <h2 class="font-display text-2xl font-bold">Semaine {{ week.number }}</h2>
+      <span class="text-sm font-semibold {{ lvl_text[week.number] }}">{{ week.level }}</span>
+    </div>
+    <p class="mt-1 font-semibold">{{ week.themes }}</p>
+    <p class="mt-1 text-sm text-ink/65">{{ week.focus }}</p>
+    <p class="mt-4 text-sm text-ink/60">{{ d[0] }}/{{ d[1] }} étapes validées</p>
+  </a>
+  {% endfor %}
+</section>
+
+<section class="mt-12">
+  <h2 class="font-display text-xl font-bold">Déroulé d'une session</h2>
+  <ul class="mt-3 grid gap-2 sm:grid-cols-2 text-ink/75">
+    {% for item in session_format %}<li class="border-l-4 border-spot pl-3">{{ item }}</li>{% endfor %}
+  </ul>
+</section>
+{% endblock %}
